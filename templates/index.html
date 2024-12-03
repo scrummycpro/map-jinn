@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Address Map Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #map {
+            margin-top: 20px;
+            height: 500px;
+            width: 100%;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Address Map Viewer</h1>
+    <form method="POST" action="/">
+        <label for="address">Enter Address:</label>
+        <input type="text" id="address" name="address" placeholder="e.g., 2468 Santa Rosa Dr, Atlanta, GA 30331" required>
+        <button type="submit">Show on Map</button>
+    </form>
+    
+    {% if error_message %}
+        <p class="error">{{ error_message }}</p>
+    {% endif %}
+    
+    <div id="map">
+        {% if map_html %}
+            {{ map_html | safe }}
+        {% else %}
+            <p>Enter an address to view the map.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
