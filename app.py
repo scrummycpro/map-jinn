@@ -4,6 +4,9 @@ import folium
 
 app = Flask(__name__)
 
+# Store previously searched addresses and their coordinates
+previous_addresses = []
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     map_html = None
@@ -16,6 +19,9 @@ def index():
                 location = geolocator.geocode(address)
                 
                 if location:
+                    # Save the address and coordinates to the history
+                    previous_addresses.append({"address": address, "lat": location.latitude, "lon": location.longitude})
+                    
                     # Create a map centered at the location
                     folium_map = folium.Map(
                         location=[location.latitude, location.longitude],
@@ -32,6 +38,11 @@ def index():
                         tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
                         attr="Esri Topography",
                         name="Esri Topography"
+                    ).add_to(folium_map)
+                    folium.TileLayer(
+                        tiles="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+                        attr="CartoDB Dark Mode",
+                        name="Dark Mode"
                     ).add_to(folium_map)
 
                     # Add a marker for the address
@@ -51,7 +62,7 @@ def index():
             except Exception as e:
                 error_message = f"An error occurred: {str(e)}"
     
-    return render_template("index.html", map_html=map_html, error_message=error_message)
+    return render_template("index.html", map_html=map_html, error_message=error_message, previous_addresses=previous_addresses)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5333)
