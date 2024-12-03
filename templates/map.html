@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">Richmack Map</h1>
+<form method="POST" action="/" class="mb-4">
+    <div class="input-group">
+        <input type="text" id="address" name="address" class="form-control" placeholder="e.g., 2468 Santa Rosa Dr, Atlanta, GA 30331" required>
+        <button type="submit" class="btn btn-primary">Show on Map</button>
+    </div>
+</form>
+
+{% if error_message %}
+    <div class="alert alert-danger">{{ error_message }}</div>
+{% endif %}
+
+<div class="border rounded p-3">
+    {% if map_html %}
+        {{ map_html | safe }}
+    {% else %}
+        <p>Enter an address to view the map.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">Previous Searches</h1>
+<div class="row">
+    {% if previous_addresses %}
+        {% for entry in previous_addresses %}
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ entry.address }}</h5>
+                        <p class="card-text">
+                            <strong>Latitude:</strong> {{ entry.lat }}<br>
+                            <strong>Longitude:</strong> {{ entry.lon }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No previous searches.</p>
+    {% endif %}
+</div>
+{% endblock %}

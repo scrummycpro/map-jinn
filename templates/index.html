@@ -3,66 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Address Map Viewer</title>
+    <title>Richmack Map</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        #map {
-            margin-top: 20px;
-            height: 500px;
-            width: 100%;
-        }
-        .error {
-            color: red;
-            font-weight: bold;
-        }
-        .history {
-            margin-top: 20px;
-        }
-        .history h2 {
-            margin-bottom: 10px;
-        }
-        .history ul {
-            list-style: none;
+            margin: 0;
             padding: 0;
         }
-        .history ul li {
-            margin-bottom: 5px;
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            margin: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>Address Map Viewer</h1>
-    <form method="POST" action="/">
-        <label for="address">Enter Address:</label>
-        <input type="text" id="address" name="address" placeholder="e.g., 2468 Santa Rosa Dr, Atlanta, GA 30331" required>
-        <button type="submit">Show on Map</button>
-    </form>
-    
-    {% if error_message %}
-        <p class="error">{{ error_message }}</p>
-    {% endif %}
-    
-    <div id="map">
-        {% if map_html %}
-            {{ map_html | safe }}
-        {% else %}
-            <p>Enter an address to view the map.</p>
-        {% endif %}
+    <div class="navbar">
+        <div><strong>Richmack Map</strong></div>
+        <div>
+            <a href="{{ url_for('map_view') }}">Map</a>
+            <a href="{{ url_for('history') }}">Previous Searches</a>
+        </div>
     </div>
-
-    <div class="history">
-        <h2>Previous Addresses</h2>
-        <ul>
-            {% for entry in previous_addresses %}
-                <li>
-                    <strong>{{ entry.address }}</strong> 
-                    (Lat: {{ entry.lat }}, Lon: {{ entry.lon }})
-                </li>
-            {% endfor %}
-        </ul>
+    <div class="container">
+        {% block content %}{% endblock %}
     </div>
 </body>
 </html>
